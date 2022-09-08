@@ -25,19 +25,23 @@ confirm("Your ship is surrounded by a fleet of alien ships! Do you want to start
     // if yes, then startgame 
 
 // prompt to attack alien
-confirm("Do you want to attack the alien ship?")
+// confirm("Do you want to attack the alien ship?")
 
 // prompts to say how many hp/hull points your ship lost
-confirm("Your ship's hull capacity is now: ")
+// confirm("Your ship's hull capacity is now: ")
 
 // prompt to say alien destroyed
     // option to attack next ship OR retreat
-let options = prompt("Do you want to attack the next alien ship or retreat?")
+// let options = prompt("Do you want to attack the next alien ship or retreat?")
 
 // prompt to say game won if all aliens destroyed or lost if player is destroyed
-let gameWon = prompt("You have destroyed all the alien ships! Would you like to play again?")
+// let gameWon = prompt("You have destroyed all the alien ships! Would you like to play again?")
 
-let gameLost = prompt("You lost the game! Would you like to play again?")
+// let gameLost = prompt("You lost the game! Would you like to play again?")
+
+// let gameMessages = []
+
+// gameMessages.push(options, gameWon, gameLost)
 
 
 // game start
@@ -131,13 +135,18 @@ for (let i = 1; i < 6; i++) {
     alienFleet.push(new alienShips())
 }
 
-
+// play, targets current alien ship from alien fleet and attacks
+function play() {
+    myShip.attackAlien(alienFleet[i]);
+}
 
 // if alien array is empty, game is over, player wins
 if (alienFleet.length === 0) {
     // gameover
     // player wins
 }
-// 
+
+// update the stats on index page
+
 
 
