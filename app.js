@@ -7,7 +7,7 @@ class myShip {
         this.accuracy = accuracy;
     }
 
-    attackAlien() {
+    attackAlien(target) {
         // if alien hull is however many points, then subtract 5 from alien hull
         // if (alienShips.hull > 0 ) {
         //     alienShips.hull - 5;
@@ -16,9 +16,11 @@ class myShip {
 
         if (Math.random() <= this.accuracy) {
             alienShips.hull -= this.firepower;
-            return console.log("You have hit the alien ship!");
+            alert("You have hit the alien ship! The alien hull is at " + alienFleet[0].hull);
+            console.log("You have hit the alien ship!");
         } else {
-            return console.log("You missed!");
+            alert("You missed!")
+            console.log("You missed!");
         }
     }
 
@@ -57,9 +59,9 @@ class alienShips {
 
         if (Math.random() <= this.accuracy) {
             myShip.hull -= this.firepower;
-            return console.log("You have been hit!");
+            console.log("You have been hit!");
         } else {
-            return console.log("The alien ship attacked and missed!");
+            console.log("The alien ship attacked and missed!");
         }
 
         // if (myShip.hull > 0) {
@@ -71,7 +73,7 @@ class alienShips {
     // if alien hull is 0, then remove that alien from the array
     removeAlien() {
         if (alienShips.hull === 0) {
-            alienFleet.pop(alienShips)
+            alienFleet.shift(alienShips)
         }
     }
 }
@@ -85,9 +87,9 @@ for (let i = 1; i < 6; i++) {
 }
 
 // play, targets current alien ship from alien fleet and attacks
-function play() {
-    myShip.attackAlien(alienFleet[0]);
-}
+// function play() {
+//     myShip.attackAlien(alienFleet[0]);
+// }
 
 // prompt()
 
@@ -110,16 +112,46 @@ You lose the game if you are destroyed */
 
 // prompt to start game
 
-// let startPrompt = confirm("Your ship is surrounded by a fleet of alien ships! Do you want to start the game?")
-// confirm("Your ship is surrounded by a fleet of alien ships! Do you want to start the game?")
+let options = ""
+let roundWon = ""
+let gameWon = "You have destroyed all of the alien ships! YOU WON!"
+let gameLost = "GAME OVER. You lost the game!"
 
-    // if yes, then startgame 
+let gameMessages = [gameWon, gameLost]
+
+// let startPrompt = alert("Your ship is surrounded by a fleet of alien ships! Get ready!")
+
+    // ok - lead to prompt attack alien 
 
 // prompt to attack alien
-// confirm("Do you want to attack the alien ship?")
+// "Do you want to attack the alien ship? Type attack to continue or retreat to quit"
+// if type yes, then attack function
+
+let playerResp = confirm("Do you want to attack the alien ship?")
+    if (playerResp == true){
+        console.log("You are about to attack...")
+        alert("You are about to attack...");
+        myShip.attackAlien(alienFleet[0]);
+    }
+    if (playerResp == false){
+        console.log("You are about to exit the game.")
+        alert("You are about to exit the game.");
+        confirm(gameMessages[1]);
+    }
+
+
+
 
 // prompts to say how many hp/hull points your ship lost
 // confirm("Your ship's hull capacity is now: ")
+
+// if alien ship survives, it attacks player
+if (alienFleet[0].hull > 0) {
+    alienShips.attackPlayer();
+}
+
+console.log(myShip.hull)
+console.log(alienShips.hull)
 
 // prompt to say alien destroyed
     // option to attack next ship OR retreat
@@ -128,24 +160,12 @@ You lose the game if you are destroyed */
 // prompt to say game won if all aliens destroyed or lost if player is destroyed
 // let gameWon = prompt("You have destroyed all the alien ships! Would you like to play again?")
 
-// let gameLost = prompt("You lost the game! Would you like to play again?")
-
-let gameMessages = ["hello", "goodbye", "testing"]
-
-prompt(gameMessages[1])
-
-// gameMessages.push(options, gameWon, gameLost)
-
-
-// game start
-
-
-// game over
 
 // if alien array is empty, game is over, player wins
 if (alienFleet.length === 0) {
     // gameover
     // player wins
+    confirm(gameMessages[0])
 }
 
 // update the stats on index page
