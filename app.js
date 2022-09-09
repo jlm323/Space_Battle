@@ -42,9 +42,9 @@
 
 
 // setting random values for alien properties
-setAliens = function(min, max) {
-    return Math.random() * (max - min) + min;
-}
+// setAliens = function(min, max) {
+//     return Math.random() * (max - min) + min;
+// }
 
 // alien ship class, calling setAliens function to sent those random values
 // class alienShips {
@@ -187,12 +187,6 @@ setAliens = function(min, max) {
 
 /////////////////////////////////////////////////
 
-// settimeout w/ confirm statement to start the game
-// battle function
-// new battle func
-    // update numbers of hulls
-    // settimeout 
-// function to update stats on index page
 
 //////////////////////////////////////////////////
 
@@ -201,15 +195,16 @@ let playerStats = document.querySelector(".playerStats")
 let enemyStats = document.querySelector(".enemyStats")
 
 let options = ""
-let roundWon = "ROUND WON!"
+let roundWon = "Congratulations! You defeated the alien ship. On to the next one!"
 let gameWon = "You have destroyed all of the alien ships! YOU WON!"
-let gameLost = "GAME OVER. You lost the game!"
+let gameOver = "GAME OVER!"
+let gameLost = "GAME OVER. You have lost the game."
 
-let gameMessages = [roundWon, gameWon, gameLost]
+let gameMessages = [roundWon, gameWon, gameOver, gameLost]
 
 
 // player ship class
-class myShip {
+class spaceShip {
     constructor(name, hull, firepower, accuracy) {
         this.name = name;
         this.hull = hull;
@@ -218,13 +213,13 @@ class myShip {
     }}
 
 
-let helloWorld = new myShip("USS Schwarzenegger", 20, 5, .7)
+let helloWorld = new spaceShip("USS Schwarzenegger", 20, 5, .7)
 
 
 
 // setting random values for alien properties
 setAliens = function(min, max) {
-    return Math.random() * (max - min) + min;
+    return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
 
@@ -236,88 +231,118 @@ class alienShips {
         this.accuracy = setAliens(.6, .8);
     }}
 
-let alienShip1 = new alienShips();
-let alienShip2 = new alienShips();
-let alienShip3 = new alienShips();
-let alienShip4 = new alienShips();
-let alienShip5 = new alienShips();
-let alienShips6 = new alienShips();
+const alienFleet = []
+for (let i = 1; i < 6; i++) {
+    alienFleet.push(new alienShips())
+}
 
-let alienFleet = [alienShip1, alienShip2, alienShip3, alienShip4, alienShip5, alienShips6]
+
+
+
+// functions to change stats for both the player and aliens
+function updatePlayer() {
+    playerStats.innerHTML = `Hull: ${helloWorld.hull} <br> Firepower: ${helloWorld.firepower} <br> Accuracy: ${helloWorld.accuracy}`
+}
+function updateAlien() {
+    enemyStats.innerHTML = `Hull: ${alienFleet[0].hull} <br> Firepower: ${alienFleet[0].firepower} <br> Accuracy: ${alienFleet[0].accuracy}`
+}
+
+// console.log(alienShip1)
+// console.log(alienShip3)
 
 // starting message, set delay for page to load
 setTimeout(() => {
-    alert("Your ship is surrounded by a fleet of alien ships! Get ready to fight!");
-    startAttack();
+    let startPrompt = alert("Your ship is surrounded by a fleet of alien ships! Get ready to fight!");
+    newFight();
 }, '3000')
 
-
-function startAttack() {
-
-}
-
+// starts attacks
 function newFight() {
-    // edit
-    // then call startAttack()
+    // if alien array is empty, player wins
+    if (alienFleet.length === 0) {
+        alert(gameMessages[1])
+    } else if (alienFleet.length != 0) {
+        
         let playerResp = confirm("Do you want to attack the alien ship?")
-
-        if (helloWorld.hull > 0 && alienFleet[0] > 0) {
-            if (playerResp == true){
-                console.log("You are about to attack...")
-                alert("You are about to attack...");
-                helloWorld.attackAlien(alienFleet[0]);
-            }
-        if (playerResp == false){
-            console.log("You are about to exit the game.")
-            alert("You are about to exit the game.");
-            confirm(gameMessages[1]);
-        }
-
-    // if alien ship survives, it attacks player
-        if (alienFleet[0].hull > 0) {
-            alienFleet[0].attackPlayer();
-        } else {
-            removeAlien();
-            confirm("Congratulations! You defeated the alien ship. On to the next!")
-        }
+    
+        if (helloWorld.hull > 0 && alienFleet[0].hull > 0) {
+            updatePlayer();
+            updateAlien();
+            setTimeout(() => {
+                if (playerResp == true){
+                
+                    console.log("You are about to attack...")
+                    alert("You are about to attack...");
+                    attackAlien(alienFleet[0]);
+                }
+                if (playerResp == false){
+                    console.log("You are about to exit the game.")
+                    alert("You are about to exit the game.");
+                    alert(gameMessages[2]);
+                    window.close();
+                }
+            }, '300');
+            
         }
     }
+}
 
 function attackAlien() {
-    if (Math.random() <= this.accuracy) {
-        alienFleet[0].hull -= this.firepower;
-        alert("You have hit the alien ship! The alien hull is at " + alienFleet[0].hull);
-        console.log("You have hit the alien ship!The alien hull is at " + alienFleet[0].hull);
+    if (Math.random() <= helloWorld.accuracy) {
+        alienFleet[0].hull -= helloWorld.firepower;
+        
+        updateAlien();
+
+        setTimeout(() => {
+            alert("You have hit the alien ship! Alien hull sustained " + helloWorld.firepower + " damage.");
+            console.log("You have hit the alien ship! Alien hull sustained " + helloWorld.firepower + " damage.");
+        }, '300');
+
+        
+
+        // if alien ship survives, it attacks player. if hull is 0, alien ship removed
+            if (alienFleet[0].hull > 0) {
+                attackPlayer();
+            } else if (alienFleet[0].hull <= 0) {
+                    alienFleet.shift();
+                    alert(gameMessages[0])
+                    alert("A new alien ship approaches...")
+                    newFight()
+            }
+        
     } else {
         alert("You missed!")
         console.log("You missed!");
+        attackPlayer();
     }
+
+    
 }
 
 function attackPlayer() {
-    if (Math.random() <= this.accuracy) {
-        helloWorld.hull -= this.firepower;
-        alert("You have been hit!")
-        console.log("You have been hit!");
+    if (Math.random() <= alienFleet[0].accuracy) {
+        helloWorld.hull -= alienFleet[0].firepower;
+
+        updatePlayer();
+
+        setTimeout(() => {
+            alert("The alien ship attacked! You have been hit!")
+            console.log("The alien ship attacked! You have been hit!");
+        }, '300');
+
+
+        // if player ship survives, attacks. if player hull at zero, game over
+            if (helloWorld.hull > 0) {
+                newFight();
+            } else if (helloWorld.hull <= 0) {
+                    alert("You hull has been destroyed...");
+                    alert(gameMessages[3]);
+            }
+
+        newFight();
     } else {
         alert("The alien ship attacked and missed!")
         console.log("The alien ship attacked and missed!");
+        newFight();
     }
 }
-
-
-// update the stats on index page
-
-// have a timeout function with a confirm statement to start the game
-
-
-//battle function
-// new battle function
-// attack function
-// enemy attack function
-//update enemy function
-//update self function
-
-//create confirms/alerts with set timeouts when html needs to update
-
-//create ways that the functions can bounce off each other (if/else statements)
