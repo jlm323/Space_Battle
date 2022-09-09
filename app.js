@@ -194,7 +194,6 @@
 let playerStats = document.querySelector(".playerStats")
 let enemyStats = document.querySelector(".enemyStats")
 
-let options = ""
 let roundWon = "Congratulations! You defeated the alien ship. On to the next one!"
 let gameWon = "You have destroyed all of the alien ships! YOU WON!"
 let gameOver = "GAME OVER!"
@@ -264,11 +263,9 @@ function newFight() {
     } else if (alienFleet.length != 0) {
         
         let playerResp = confirm("Do you want to attack the alien ship?")
-    
+        
         if (helloWorld.hull > 0 && alienFleet[0].hull > 0) {
-            updatePlayer();
-            updateAlien();
-            setTimeout(() => {
+            
                 if (playerResp == true){
                 
                     console.log("You are about to attack...")
@@ -279,9 +276,8 @@ function newFight() {
                     console.log("You are about to exit the game.")
                     alert("You are about to exit the game.");
                     alert(gameMessages[2]);
-                    window.close();
+                    console.log(gameMessages[2]);
                 }
-            }, '300');
             
         }
     }
@@ -293,10 +289,10 @@ function attackAlien() {
         
         updateAlien();
 
-        setTimeout(() => {
+        
             alert("You have hit the alien ship! Alien hull sustained " + helloWorld.firepower + " damage.");
             console.log("You have hit the alien ship! Alien hull sustained " + helloWorld.firepower + " damage.");
-        }, '300');
+        
 
         
 
@@ -306,7 +302,9 @@ function attackAlien() {
             } else if (alienFleet[0].hull <= 0) {
                     alienFleet.shift();
                     alert(gameMessages[0])
+                    console.log(gameMessages[0])
                     alert("A new alien ship approaches...")
+                    console.log("A new alien ship approaches...")
                     newFight()
             }
         
@@ -336,7 +334,9 @@ function attackPlayer() {
                 newFight();
             } else if (helloWorld.hull <= 0) {
                     alert("You hull has been destroyed...");
+                    console.log("You hull has been destroyed...");
                     alert(gameMessages[3]);
+                    console.log(gameMessages[3])
             }
 
         newFight();
