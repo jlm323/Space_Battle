@@ -323,12 +323,9 @@ function attackPlayer() {
 
         updatePlayer();
 
-        setTimeout(() => {
             alert("The alien ship attacked! You have been hit!")
             console.log("The alien ship attacked! You have been hit!");
-        }, '300');
-
-
+        
         // if player ship survives, attacks. if player hull at zero, game over
             if (helloWorld.hull > 0) {
                 newFight();
